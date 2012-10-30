@@ -25,3 +25,9 @@ function klasses($scope,Klass) {
 }
 klasses.$inject = ['$scope','Klass'];
 
+function klass($scope,Klass,$routeParams) {
+    var klass = $scope.klass = Klass.get({'classId':$routeParams.classId})
+}
+klass.$inject = ['$scope','Klass','$routeParams'];
+
+
