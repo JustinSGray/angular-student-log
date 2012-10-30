@@ -2,11 +2,26 @@
 
 /* Controllers */
 
+function klasses($scope,Klass) {
+    var klasses = $scope.klasses = Klass.query();
 
-function MyCtrl1() {}
-MyCtrl1.$inject = [];
+    $scope.addClass = function(class_name) {
+        klasses.push({'name':class_name, 
+                      'date':"today!",
+                      'active':true});
+        $scope.next_id++;
+    }
 
+    $scope.delClass = function(klass) {
+        klasses.splice(klasses.indexOf(klass),1)
+    }
 
-function MyCtrl2() {
+    $scope.toggle = function(klass) {
+        var i = klasses.indexOf(klass)
+        var current = klasses[i].active
+        klasses[i].active = !current
+
+    }
 }
-MyCtrl2.$inject = [];
+klasses.$inject = ['$scope','Klass'];
+
