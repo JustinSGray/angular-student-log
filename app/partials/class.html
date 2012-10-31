@@ -25,11 +25,17 @@
     <div class="span12">
         <h2> Students </h2>
         <tabs>
-            <pane title="Enrolled">
-            </pane>
-            <pane title="Withdrawn">
-            </pane>
-            <pane title="Admitted">
+            <pane ng-repeat="status in ['Enrolled','Withdrawn','Admitted']" title={{status}}>
+                <table class="table">
+                    <thead>
+                      <tr><th ng-repeat="col in header_map">{{col.value}}</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="student in klass.students">
+                        <td ng-repeat="col in header_map">{{student[col.key]}}</td>
+                      </tr>
+                    </tbody>
+                </table>
             </pane>
         </tabs>
     </div>
