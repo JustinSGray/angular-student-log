@@ -28,16 +28,20 @@ function klasses($scope,Klass) {
 }
 klasses.$inject = ['$scope','Klass'];
 
-function klass($scope,Klass,$routeParams) {
-    var klass = $scope.klass = Klass.get({'classId':$routeParams.classId})
+function klass($scope,$filter,Klass,$routeParams) {
+    var klass = $scope.klass = Klass.get({'classId':$routeParams.classId},function(klass){
+        angular.forEach(klass.students,function(value,key){ 
+            klass.students[key].send_msg = false;
+        })
+    })
 //Msg#SepIDLast NameFirst NameDECP1 P2TeacherStatusParent's NameGrPhone #R inW inR outW out
     $scope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
                          {"key":"first_name","value":'First Name'},
-                         {"key":"DEC","value":'DEC'},
+                         {"key":"dec","value":'DEC'},
                          {"key":"p1","value":"P1"},
                          {"key":"p2","value":"P2"},
-                         {"key":"Teacher","value":"Teacher"},
+                         {"key":"teacher","value":"Teacher"},
                          {"key":"status","value":"Status"},
                          {"key":"parents_name","value":"Parent's Name"},
                          {"key":"grade","value":"Gr"},
@@ -46,7 +50,18 @@ function klass($scope,Klass,$routeParams) {
                          {"key":"w_in","value":"W in"},
                          {"key":"r_out","value":"R out"},
                          {"key":"w_out","value":"W out"}];
+
+    $scope.status_map = [
+        {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
+        {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
+        {'key':"adm","long_name":"Admitted","short_name":"Adm"}
+    ]  
+
+    $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
+    $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
+
+    
 }
-klass.$inject = ['$scope','Klass','$routeParams'];
+klass.$inject = ['$scope','$filter','Klass','$routeParams'];
 
 
