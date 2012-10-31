@@ -67,3 +67,9 @@ function klass($scope,$filter,Klass,$routeParams) {
 klass.$inject = ['$scope','$filter','Klass','$routeParams'];
 
 
+function klass_student($scope) {
+
+}
+klass_student.$inject = ['$scope'];
+
+
