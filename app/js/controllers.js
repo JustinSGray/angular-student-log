@@ -13,7 +13,10 @@ function klasses($scope,Klass) {
     }
 
     $scope.delClass = function(klass) {
-        klasses.splice(klasses.indexOf(klass),1)
+        var r = confirm("Are you sure you want to delete this class? This will permanently remove all the data about it!!!")
+        if(r){
+            klasses.splice(klasses.indexOf(klass),1);
+        };
     }
 
     $scope.toggle = function(klass) {

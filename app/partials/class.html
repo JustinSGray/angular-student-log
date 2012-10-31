@@ -26,12 +26,16 @@
         <h2> Students </h2>
         <tabs>
             <pane ng-repeat="status in ['Enrolled','Withdrawn','Admitted']" title={{status}}>
-                <table class="table">
+                <table class="table table-bordered table-condensed">
                     <thead>
-                      <tr><th ng-repeat="col in header_map">{{col.value}}</th></tr>
+                      <tr>
+                        <th> Msg </th>
+                        <th ng-repeat="col in header_map">{{col.value}}</th>
+                      </tr>
                     </thead>
                     <tbody>
                       <tr ng-repeat="student in klass.students">
+                        <td> <input type="checkbox"> </td>
                         <td ng-repeat="col in header_map">{{student[col.key]}}</td>
                       </tr>
                     </tbody>
