@@ -21,3 +21,7 @@ select {
 .Indep {
     background-color: #FCF;
 }
+
+.passing {
+    background-color: yellow;
+}

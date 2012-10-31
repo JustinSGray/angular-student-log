@@ -51,6 +51,8 @@ function klass($scope,$filter,Klass,$routeParams) {
                          {"key":"r_out","value":"R out"},
                          {"key":"w_out","value":"W out"}];
 
+    $scope.score_columns = ['r_in','r_out','w_in','w_out'];                    
+
     $scope.status_map = [
         {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
         {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
