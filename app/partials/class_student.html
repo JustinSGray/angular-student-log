@@ -1,1 +1,31 @@
-testing
+<div class="row"><div class="span12">
+    <h1><a ng-href="/classes/{{klass.id}}">{{klass.name}}</a> : {{student.first_name}} {{student.last_name}}</h1>
+</div></div>
+
+<div class="row">
+    <div class="span6">
+        <h3>Student Notes</h3>
+        <textarea ng-model="student.notes" rows="5" cols="20"></textarea>
+    </div>
+    <div class="span6">
+        <h3>Other Info</h3>
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="inputStatus">Status</label>
+                <div class="controls">
+                    <select class="span1" ng-model="klass_data.status"
+                      ng-options="o.key as o.short_name for o in status_map">
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Teacher</label>
+                <div class="controls">
+                    <select class="input-small" ng-model="klass_data.teacher"
+                    ng-options="key for key in teacher_types">
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

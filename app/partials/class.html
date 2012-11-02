@@ -38,8 +38,7 @@
                       ng-class="teacher_classes[student.teacher]">
                       
                         <td> 
-                            <input type="checkbox" ng-model="student.send_msg"> 
-                            <a href="/app/index.html#/classes/{{klass.id}}/students/{{student.id}}">GO!</a>
+                            <input type="checkbox" ng-model="student.send_msg">
                         </td>
                         <td ng-repeat="col in header_map"
                             ng-class="{passing: score_columns.indexOf(col.key)>=0&&student[col.key]>=400||student[col.key].indexOf('FE')>=0}">
@@ -64,7 +63,7 @@
                                     </select>
                                 </span>
                                 <span ng-switch-default>
-                                    {{student[col.key]}}
+                                    <a ng-href="/app/index.html#/classes/{{klass.id}}/students/{{student.id}}">{{student[col.key]}}</a>
                                 </span>    
                             </ng-switch>    
                         </td>

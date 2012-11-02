@@ -28,7 +28,7 @@ function klasses($scope,Klass) {
 }
 klasses.$inject = ['$scope','Klass'];
 
-function klass($scope,$filter,Klass,$routeParams) {
+function klass($scope,$filter,Klass,$routeParams,$location) {
     var klass = $scope.klass = Klass.get({'classId':$routeParams.classId},function(klass){
         angular.forEach(klass.students,function(value,key){ 
             klass.students[key].send_msg = false;
@@ -61,13 +61,42 @@ function klass($scope,$filter,Klass,$routeParams) {
 
     $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
     $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
-
+    
+    $scope.goStudent = function(studentId) {
+        $location.path("/classes/"+klass.id+"/students/"+studentId);
+    }
     
 }
-klass.$inject = ['$scope','$filter','Klass','$routeParams'];
+klass.$inject = ['$scope','$filter','Klass','$routeParams','$location'];
 
 
 function klass_student($scope) {
+    $scope.status_map = [
+        {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
+        {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
+        {'key':"adm","long_name":"Admitted","short_name":"Adm"}
+    ]  
+    $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
+    $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
+
+    $scope.klass = {
+        "id":1,
+        "name":"Class 1",
+        "date":"01/11/2012"};
+
+    $scope.student = {"id":1,"first_name":"Justin","last_name":"Gray","sep_id":10001,"dec":true,
+         "parents_name":"Scott Gray","grade":11,"phone":"216-773-0000",
+         "r_in":400,"w_in":0,"r_out":"FE200","w_out":0,"notes":"xxxx"};
+
+        
+
+    $scope.klass_data = {"status":"enr","p1":true,"p2":false,
+        "teacher":"GenEd",
+        "notes":[{"id":1,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
+                 {"id":2,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
+                 {"id":3,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
+                 ]};
+
 
 }
 klass_student.$inject = ['$scope'];
