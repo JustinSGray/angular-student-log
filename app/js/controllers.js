@@ -34,7 +34,7 @@ function klass($scope,$filter,Klass,$routeParams,$location) {
             klass.students[key].send_msg = false;
         })
     })
-//Msg#SepIDLast NameFirst NameDECP1 P2TeacherStatusParent's NameGrPhone #R inW inR outW out
+    //Msg#SepIDLast NameFirst NameDECP1 P2TeacherStatusParent's NameGrPhone #R inW inR outW out
     $scope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
                          {"key":"first_name","value":'First Name'},
@@ -51,13 +51,13 @@ function klass($scope,$filter,Klass,$routeParams,$location) {
                          {"key":"r_out","value":"R out"},
                          {"key":"w_out","value":"W out"}];
 
-    $scope.score_columns = ['r_in','r_out','w_in','w_out'];                    
-
     $scope.status_map = [
         {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
         {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
         {'key':"adm","long_name":"Admitted","short_name":"Adm"}
     ]  
+
+    $scope.score_columns = ['r_in','r_out','w_in','w_out'];                    
 
     $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
     $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
@@ -71,11 +71,26 @@ klass.$inject = ['$scope','$filter','Klass','$routeParams','$location'];
 
 
 function klass_student($scope) {
+
+    $scope.header_map = [{"key":"sep_id","value":"SepID"},
+                         {"key":"last_name","value":"Last Name"},
+                         {"key":"first_name","value":'First Name'},
+                         {"key":"dec","value":'DEC'},
+                         {"key":"parents_name","value":"Parent's Name"},
+                         {"key":"grade","value":"Gr"},
+                         {"key":"phone","value":"Phone #"},
+                         {"key":"r_in","value":"R in"},
+                         {"key":"w_in","value":"W in"},
+                         {"key":"r_out","value":"R out"},
+                         {"key":"w_out","value":"W out"}];
+
     $scope.status_map = [
         {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
         {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
         {'key':"adm","long_name":"Admitted","short_name":"Adm"}
-    ]  
+    ] 
+
+    $scope.score_columns = ['r_in','r_out','w_in','w_out'];
     $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
     $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
 

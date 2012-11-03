@@ -41,7 +41,7 @@
                             <input type="checkbox" ng-model="student.send_msg">
                         </td>
                         <td ng-repeat="col in header_map"
-                            ng-class="{passing: score_columns.indexOf(col.key)>=0&&student[col.key]>=400||student[col.key].indexOf('FE')>=0}">
+                            ng-class="{passing: score_columns.indexOf(col.key)>=0&&(student[col.key]>=400||student[col.key].indexOf('FE')>=0)}">
                             <ng-switch on="col.key"> 
                                 <span ng-switch-when="dec">
                                     <input type="checkbox" ng-model="student.dec">
