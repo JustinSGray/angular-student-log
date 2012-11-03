@@ -107,10 +107,28 @@ function klass_student($scope) {
 
     $scope.klass_data = {"status":"enr","p1":true,"p2":false,
         "teacher":"GenEd",
-        "notes":[{"id":1,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
-                 {"id":2,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
-                 {"id":3,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
+        "notes":[{"class":{"id":1,
+                           "name":"Class 1",
+                           "date":"01/11/2012"},
+                  "id":1,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
+                 {"class":{"id":1,
+                           "name":"Class 1",
+                           "date":"01/11/2012"},
+                  "id":2,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
+                 {"class":{"id":2,
+                  "name":"Class 2",
+                  "date":"01/11/2011"},
+                  "id":3,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"}
                  ]};
+
+    $scope.add_note = function(text) {
+        var note = {
+            "class":$scope.klass,
+            "date_time": new Date(),
+            "note":text
+        }
+        $scope.klass_data.notes.push(note);
+    }             
 
 
 }
