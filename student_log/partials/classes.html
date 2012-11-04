@@ -7,7 +7,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="klass in klasses | filter:{'active':true}">
-                    <td><a ng-href="/app/index.html#/classes/{{klass.id}}">{{klass.name}}</a></td><td>{{klass.date}}</td>
+                    <td><a ng-href="index.html#/classes/{{klass.id}}">{{klass.name}}</a></td><td>{{klass.date}}</td>
                     <td><a class="btn active_btn btn-success" ng-click="toggle(klass)"><i class="icon-off"></i></a>
                         <a class="btn del_btn" ng-click="delClass(klass)"><i class="icon-trash"></i></a>
                     </td>
@@ -26,7 +26,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="klass in klasses | filter:{'active':false}">
-                    <td><a ng-href="/app/index.html#/classes/{{klass.id}}">{{klass.name}}</a></td><td>{{klass.date}}</td>
+                    <td><a ng-href="index.html#/classes/{{klass.id}}">{{klass.name}}</a></td><td>{{klass.date}}</td>
                     <td><a class="btn active_btn btn-danger" ng-click="toggle(klass)"><i class="icon-off"></i></a>
                         <a class="btn del_btn" ng-click="delClass(klass)"><i class="icon-trash"></i></a>
                     </td>

@@ -15,6 +15,8 @@ var app = angular.module('studentLog', ['studentLog.filters', 'studentLog.servic
       alert(text);
     };
 
+    $rootScope.app_root = "/student_log";
+
     $rootScope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
                          {"key":"first_name","value":'First Name'},
