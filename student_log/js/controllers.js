@@ -2,11 +2,17 @@
 
 /* Controllers */
 
-function klasses($scope,Klass) {
-    var klasses = $scope.klasses = Klass.query();
+function klasses($scope,$http,Klass) {
+    //var klasses = $scope.klasses = Klass.query();
+
+    $scope.klasses = [];
+    $http.get('/api/v1/classes/').then(function(response) {
+              console.log(response.data.objects);
+              $scope.klasses = response.data.objects;
+            });
 
     $scope.addClass = function(class_name) {
-        klasses.push({'name':class_name, 
+        $scope.klasses.push({'name':class_name, 
                       'date':"today!",
                       'active':true});
         $scope.next_id++;
@@ -15,18 +21,18 @@ function klasses($scope,Klass) {
     $scope.delClass = function(klass) {
         var r = confirm("Are you sure you want to delete this class? This will permanently remove all the data about it!!!")
         if(r){
-            klasses.splice(klasses.indexOf(klass),1);
+            $scope.klasses.splice($scope.klasses.indexOf(klass),1);
         };
     }
 
     $scope.toggle = function(klass) {
-        var i = klasses.indexOf(klass)
-        var current = klasses[i].active
-        klasses[i].active = !current
+        var i = $scope.klasses.indexOf(klass)
+        var current = $scope.klasses[i].active
+        $scope.klasses[i].active = !current
 
     }
 }
-klasses.$inject = ['$scope','Klass'];
+klasses.$inject = ['$scope','$http','Klass'];
 
 function klass($scope,$filter,Klass,$routeParams,$location) {
     var klass = $scope.klass = Klass.get({'classId':$routeParams.classId},function(klass){
