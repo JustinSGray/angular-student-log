@@ -3,13 +3,13 @@
 /* Controllers */
 
 function klasses($scope,$http,Klass) {
-    //var klasses = $scope.klasses = Klass.query();
+    var klasses = $scope.klasses = Klass.query();
 
-    $scope.klasses = [];
+    /*$scope.klasses = [];
     $http.get('/api/v1/classes/').then(function(response) {
               console.log(response.data.objects);
               $scope.klasses = response.data.objects;
-            });
+            });*/
 
     $scope.addClass = function(class_name) {
         $scope.klasses.push({'name':class_name, 
