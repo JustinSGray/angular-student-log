@@ -76,7 +76,7 @@ function klass($scope,$filter,Klass,$routeParams,$location) {
 klass.$inject = ['$scope','$filter','Klass','$routeParams','$location'];
 
 
-function klass_student($scope) {
+function interaction($scope,Interaction,$routeParams) {
 
     $scope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
@@ -99,7 +99,15 @@ function klass_student($scope) {
     $scope.score_columns = ['r_in','r_out','w_in','w_out'];
     $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
     $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
+    
 
+    var interaction = $scope.interaction = Interaction.get({'interactId':$routeParams.interactId},function(){
+        $scope.klass = interaction.klass
+        $scope.student = interaction.student
+        console.log($scope.interaction);
+    });
+
+    /*//Bootstrap data
     $scope.klass = {
         "id":1,
         "name":"Class 1",
@@ -126,6 +134,9 @@ function klass_student($scope) {
                   "date":"01/11/2011"},
                   "id":3,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"}
                  ]};
+    */
+
+
 
     $scope.add_note = function(text) {
         var note = {
@@ -138,6 +149,6 @@ function klass_student($scope) {
 
 
 }
-klass_student.$inject = ['$scope'];
+interaction.$inject = ['$scope','Interaction','$routeParams'];
 
 
