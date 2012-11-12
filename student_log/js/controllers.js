@@ -12,24 +12,28 @@ function klasses($scope,$http,Klass) {
             });*/
 
     $scope.addClass = function(class_name) {
-        klasses.push({'name':class_name, 
-                      'date':"today!",
-                      'active':true});
-        $scope.next_id++;
+        var new_klass = {'name':class_name, 
+                      'date':new Date().toJSON(),
+                      'active':true};
+        Klass.save(new_klass,function(){
+            klasses.push(new_klass);
+        });
     }
 
     $scope.delClass = function(klass) {
         var r = confirm("Are you sure you want to delete this class? This will permanently remove all the data about it!!!")
         if(r){
             $scope.klasses.splice(klasses.indexOf(klass),1);
+            Klass.delete({'classId':klass.id});
         };
+
     }
 
     $scope.toggle = function(klass) {
         var i = klasses.indexOf(klass)
         var current = klasses[i].active
         klasses[i].active = !current
-
+        Klass.save(klass);
     }
 }
 klasses.$inject = ['$scope','$http','Klass'];
