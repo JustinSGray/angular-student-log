@@ -104,39 +104,7 @@ function interaction($scope,Interaction,$routeParams) {
     var interaction = $scope.interaction = Interaction.get({'interactId':$routeParams.interactId},function(){
         $scope.klass = interaction.klass
         $scope.student = interaction.student
-        console.log($scope.interaction);
     });
-
-    /*//Bootstrap data
-    $scope.klass = {
-        "id":1,
-        "name":"Class 1",
-        "date":"01/11/2012"};
-
-    $scope.student = {"id":1,"first_name":"Justin","last_name":"Gray","sep_id":10001,"dec":true,
-         "parents_name":"Scott Gray","grade":11,"phone":"216-773-0000",
-         "r_in":400,"w_in":0,"r_out":"FE200","w_out":0,"notes":"xxxx"};
-
-        
-
-    $scope.klass_data = {"status":"enr","p1":true,"p2":false,
-        "teacher":"GenEd",
-        "notes":[{"class":{"id":1,
-                           "name":"Class 1",
-                           "date":"01/11/2012"},
-                  "id":1,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
-                 {"class":{"id":1,
-                           "name":"Class 1",
-                           "date":"01/11/2012"},
-                  "id":2,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"},
-                 {"class":{"id":2,
-                  "name":"Class 2",
-                  "date":"01/11/2011"},
-                  "id":3,"date_time":"XXXX","note":"XXXXXXXXXXXXXXX"}
-                 ]};
-    */
-
-
 
     $scope.add_note = function(text) {
         var note = {
@@ -145,7 +113,12 @@ function interaction($scope,Interaction,$routeParams) {
             "note":text
         }
         $scope.klass_data.notes.push(note);
-    }             
+    }
+
+    $scope.save_interaction = function() {
+        console.log($scope.interaction);
+        Interaction.save($scope.interaction);
+    }            
 
 
 }

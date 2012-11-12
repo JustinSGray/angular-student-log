@@ -49,12 +49,12 @@
             <div class="control-group">
                 <label class="control-label">Proctoring</label>
                 <div class="controls">
-                    <input type="checkbox" ng-model="interaction.p1"> P1 |
-                    <input type="checkbox" ng-model="interaction.p2"> P2
+                    <input type="checkbox" ng-model="interaction.q1"> P1 |
+                    <input type="checkbox" ng-model="interaction.q2"> P2
                 </div>
             </div>
             <div class="control-group">
-                <button type="submit" class="btn">Save</button>
+                <button type="submit" class="btn" ng-click="save_interaction();">Save</button>
             </div>
         </form>
     </div>
@@ -64,7 +64,7 @@
     <div class="span12">
         <h3>Add a Note</h3>
         <form class="form-horizontal">
-        <textarea rows="5" class="span5" ng-model="new_note"></textarea>
+        <textarea rows="5" class="span5" ng-model="new_note" id="new_note_txt"></textarea>
         <button type="submit" class="btn" ng-click="add_note(new_note)">Record</button>
         </form>
     </div>  
