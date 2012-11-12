@@ -5,8 +5,15 @@
 
 // Demonstrate how to register services
 // In this case it is a simple value service.
-angular.module('studentLog.services',[]).value('version', '0.1');
+angular.module('studentLog.services',['tpResource']).
+factory('Klass', function($resource){
+  return $resource('/api/v1/classes/:classId', {}, {
+    query: {method:'GET', params:{classId:""}, isArray:true}
+  });
+}).
+value('version', '0.1')
 
+/*
 angular.module('studentLog').factory('Klass', ['$http', function($http) {
   // Book is a class which we can use for retrieving and 
   // updating data on the server
@@ -38,3 +45,4 @@ angular.module('studentLog').factory('Klass', ['$http', function($http) {
 
   return Klass;
 }]);
+*/

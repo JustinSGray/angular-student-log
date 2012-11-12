@@ -34,36 +34,35 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-repeat="student in klass.students | filter:{'status':status.short_name}"
-                      ng-class="teacher_classes[student.teacher]">
-                      
+                      <tr ng-repeat="inter in klass.interactions | filter:{'status':status.short_name}"
+                      ng-class="teacher_classes[inter.teacher]">
                         <td> 
-                            <input type="checkbox" ng-model="student.send_msg">
+                            <input type="checkbox" ng-model="inter.send_msg">
                         </td>
                         <td ng-repeat="col in header_map"
-                            ng-class="{passing: score_columns.indexOf(col.key)>=0&&(student[col.key]>=400||student[col.key].indexOf('FE')>=0)}">
+                            ng-class="{passing: score_columns.indexOf(col.key)>=0&&(inter.student[col.key]>=400||inter.student[col.key].indexOf('FE')>=0)}">
                             <ng-switch on="col.key"> 
                                 <span ng-switch-when="dec">
-                                    <input type="checkbox" ng-model="student.dec">
+                                    <input type="checkbox" ng-model="inter.student.dec">
                                 </span> 
                                 <span ng-switch-when="p1">
-                                    <input type="checkbox" ng-model="student.p1">
+                                    <input type="checkbox" ng-model="inter.q1">
                                 </span> 
                                 <span ng-switch-when="p2">
-                                    <input type="checkbox" ng-model="student.p2">
+                                    <input type="checkbox" ng-model="inter.q2">
                                 </span>      
                                 <span ng-switch-when="status">
-                                    <select class="span1" ng-model="student.status"
+                                    <select class="span1" ng-model="inter.status"
                                     ng-options="o.key as o.short_name for o in status_map">
                                     </select>
                                 </span>
                                 <span ng-switch-when="teacher">
-                                    <select class="input-small" ng-model="student.teacher"
+                                    <select class="input-small" ng-model="inter.teacher"
                                     ng-options="key for key in teacher_types">
                                     </select>
                                 </span>
                                 <span ng-switch-default>
-                                    <a ng-href="index.html#/classes/{{klass.id}}/students/{{student.id}}">{{student[col.key]}}</a>
+                                    <a ng-href="index.html#/classes/{{klass.id}}/students/{{student.id}}">{{inter.student[col.key]}}</a>
                                 </span>    
                             </ng-switch>    
                         </td>
