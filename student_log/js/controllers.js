@@ -5,12 +5,6 @@
 function klasses($scope,$http,Klass) {
     var klasses = $scope.klasses = Klass.query();
 
-    /*$scope.klasses = [];
-    $http.get('/api/v1/classes/').then(function(response) {
-              console.log(response.data.objects);
-              $scope.klasses = response.data.objects;
-            });*/
-
     $scope.addClass = function(class_name) {
         var new_klass = {'name':class_name, 
                       'date':new Date().toJSON(),
@@ -38,12 +32,32 @@ function klasses($scope,$http,Klass) {
 }
 klasses.$inject = ['$scope','$http','Klass'];
 
-function klass($scope,$filter,Klass,$routeParams,$location) {
+function klass($scope,$filter,Klass,Interaction,$routeParams,$location) {
+    $scope.multinote = "";
+    $scope.select_options = {all:false}
+
     $scope.klass = Klass.get({'classId':$routeParams.classId},function(){
         angular.forEach($scope.klass.interactions,function(value,key){ 
-            $scope.klass.interactions[key].send_msg = false;
-        })
+            $scope.klass.interactions[key].send_msg = $scope.select_options.all;
+            
+            var name = "klass.interactions["+key+"]";
+            $scope.$watch(name,function(oldVal,newVal){
+                Interaction.save($scope.klass.interactions[key]);
+            },true);
+            
+        });
     });
+
+    
+
+    $scope.$watch("select_options.all",function(newVal,oldVal){
+        angular.forEach($filter('filter')($scope.klass.interactions,{'status':'Enr'}),function(value,key){
+            value.send_msg = newVal;
+        });
+    });
+
+    
+
     //Msg#SepIDLast NameFirst NameDECP1 P2TeacherStatusParent's NameGrPhone #R inW inR outW out
     $scope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
@@ -67,17 +81,19 @@ function klass($scope,$filter,Klass,$routeParams,$location) {
         {'key':"adm","long_name":"Admitted","short_name":"Adm"}
     ]  
 
-    $scope.score_columns = ['r_in','r_out','w_in','w_out'];                    
+    $scope.score_columns = ['r_score_in','r_score_out','w_score_in','w_score_out'];                    
 
     $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
     $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
-    
+
     $scope.goStudent = function(studentId) {
         $location.path("/classes/"+klass.id+"/students/"+studentId);
     }
+
+    
     
 }
-klass.$inject = ['$scope','$filter','Klass','$routeParams','$location'];
+klass.$inject = ['$scope','$filter','Klass','Interaction','$routeParams','$location','saveQueue'];
 
 
 function interaction($scope,Interaction,$routeParams) {
@@ -89,10 +105,10 @@ function interaction($scope,Interaction,$routeParams) {
                          {"key":"parents_name","value":"Parent's Name"},
                          {"key":"grade","value":"Gr"},
                          {"key":"phone","value":"Phone #"},
-                         {"key":"r_in","value":"R in"},
-                         {"key":"w_in","value":"W in"},
-                         {"key":"r_out","value":"R out"},
-                         {"key":"w_out","value":"W out"}];
+                         {"key":"r_score_in","value":"R in"},
+                         {"key":"w_score_in","value":"W in"},
+                         {"key":"r_score_out","value":"R out"},
+                         {"key":"w_score_out","value":"W out"}];
 
     $scope.status_map = [
         {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
@@ -100,7 +116,7 @@ function interaction($scope,Interaction,$routeParams) {
         {'key':"adm","long_name":"Admitted","short_name":"Adm"}
     ] 
 
-    $scope.score_columns = ['r_in','r_out','w_in','w_out'];
+    $scope.score_columns = ['r_score_in','r_score_out','w_score_in','w_score_out'];
     $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
     $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
     
@@ -120,7 +136,6 @@ function interaction($scope,Interaction,$routeParams) {
     }
 
     $scope.save_interaction = function() {
-        console.log($scope.interaction);
         Interaction.save($scope.interaction);
     }            
 

@@ -35,10 +35,10 @@ factory('uiState', function() {
         active: activeElement
     };
 }).
-factory('pendingServerInteractions', function(uiState, $rootScope) {
+factory('saveQueue', function(uiState, $rootScope) {
     var registry = {};
 
-    pendingServerInteractions = {
+    var saveQueue = {
         /**
          * Adds an interaction that should be performed later to the registry under the
          * given key.
@@ -59,7 +59,7 @@ factory('pendingServerInteractions', function(uiState, $rootScope) {
          * Will be called by a watch on focussed state. Executes all pending interactions.
          */
         executeCallbacks: function() {
-            _.forEach(registry, function(value, key, myMap) {
+            angular.forEach(registry, function(value, key, myMap) {
                 if (value) {
                     value(key);
                 }
@@ -71,11 +71,12 @@ factory('pendingServerInteractions', function(uiState, $rootScope) {
     $rootScope.$watch(function() {
         return uiState.active.current;
     }, function(newValue, oldValue) {
-        if (oldValue != newValue) {
-            pendingServerInteractions.executeCallbacks();
-        }
+        console.log("active state change: ",uiState.active.current)
+        //if (oldValue != newValue) {
+            saveQueue.executeCallbacks();
+        //}
     });
-    return pendingServerInteractions;
+    return saveQueue;
 });
 
 

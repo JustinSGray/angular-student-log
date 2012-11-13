@@ -15,29 +15,35 @@
         
         <form>
             <legend>Add note to all checked students</legend>
-            <textarea rows="5" cols="200" ng-model="multinote"> </textarea>
+            <textarea rows="5" cols="200" ng-model="multinote" save-focus id="multinote"> </textarea>
             <input type="submit" class="btn">
         </form>
+
     </div>
 </div>
 
 <div class="row">
     <div class="span12">
         <h2> Students </h2>
+        
         <tabs>
             <pane ng-repeat="status in status_map" title={{status.long_name}}>
                 <table class="table table-bordered table-condensed">
                     <thead>
                       <tr>
-                        <th> Msg </th>
+                        <th> 
+                             <input type="checkbox" ng-model="select_options.all" ng-show="$first">
+                             Msg
+                        </th>
                         <th ng-repeat="col in header_map">{{col.value}}</th>
                       </tr>
                     </thead>
+                    <div ng-init="$top_first=$first;"></div>
                     <tbody>
                       <tr ng-repeat="inter in klass.interactions | filter:{'status':status.short_name}"
                       ng-class="teacher_classes[inter.teacher]">
                         <td> 
-                            <input type="checkbox" ng-model="inter.send_msg">
+                            <input type="checkbox" ng-model="inter.send_msg" ng-show="$top_first">
                         </td>
                         <td ng-repeat="col in header_map"
                             ng-class="{passing: score_columns.indexOf(col.key)>=0&&(inter.student[col.key]>=400||inter.student[col.key].indexOf('FE')>=0)}">

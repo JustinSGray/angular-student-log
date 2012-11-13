@@ -55,7 +55,7 @@ angular.module('studentLog.directives', []).
       replace: true
     };
   }).
-  directive('autosave', function(uiState) {
+  directive('saveFocus', function(uiState) {
     return {
         restrict: 'A',
         scope: false,
@@ -69,4 +69,16 @@ angular.module('studentLog.directives', []).
             });
         }
     };
+  }).
+  directive('saveChange',function(uiState) {
+    return {
+      restrict: 'A',
+      scope: false,
+      link: function(scope,element,attrs) {
+            $(element).bind('change',function() {
+                scope.$apply(uiState.focus(element));
+                scope.$apply(uiState.blur(element));
+            })
+      }
+    } 
   });
