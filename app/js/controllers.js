@@ -130,11 +130,22 @@ function interaction($scope,Interaction,$routeParams) {
                          {"key":"w_score_in","value":"W in"},
                          {"key":"r_score_out","value":"R out"},
                          {"key":"w_score_out","value":"W out"}];
+    var auto_save = ['status','teacher','q1','q2'];
 
-    var interaction = $scope.interaction = Interaction.get({'interactId':$routeParams.interactId},function(){
+    $scope.interaction = Interaction.get({'interactId':$routeParams.interactId},function(){
+        var interaction = $scope.interaction
         $scope.klass = interaction.klass
         $scope.student = interaction.student
+        
+        angular.forEach(auto_save,function(attr,key){
+            $scope.$watch('interaction.'+attr,function(oldVal,newVal){
+                $scope.save_interaction();
+            },true);
+        });
     });
+
+    
+    
 
 
     $scope.add_note = function(text) {
