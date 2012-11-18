@@ -1,5 +1,22 @@
 'use strict';
 
+
+/* root scope */ 
+app.run(function($rootScope) {
+    $rootScope.alert = function(text) {
+      alert(text);
+    };
+
+    $rootScope.status_map = [
+        {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
+        {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
+        {'key':"adm","long_name":"Admitted","short_name":"Adm"}
+    ] 
+
+    $rootScope.score_columns = ['r_score_in','r_score_out','w_score_in','w_score_out'];
+    $rootScope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
+    $rootScope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};                     
+  });
 /* Controllers */
 
 function klasses($scope,$http,Klass) {
@@ -32,8 +49,8 @@ function klasses($scope,$http,Klass) {
 }
 klasses.$inject = ['$scope','$http','Klass'];
 
-function klass($scope,$filter,Klass,Interaction,$routeParams,$location) {
-    $scope.multinote = "";
+function klass($scope,$filter,Klass,Interaction,Record,$routeParams,$location) {
+    $scope.multinote = "Hello?";
     $scope.select_options = {all:false}
 
     $scope.klass = Klass.get({'classId':$routeParams.classId},function(){
@@ -56,8 +73,6 @@ function klass($scope,$filter,Klass,Interaction,$routeParams,$location) {
         });
     });
 
-    
-
     //Msg#SepIDLast NameFirst NameDECP1 P2TeacherStatusParent's NameGrPhone #R inW inR outW out
     $scope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
@@ -75,16 +90,22 @@ function klass($scope,$filter,Klass,Interaction,$routeParams,$location) {
                          {"key":"r_score_out","value":"R out"},
                          {"key":"w_score_out","value":"W out"}];
 
-    $scope.status_map = [
-        {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
-        {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
-        {'key':"adm","long_name":"Admitted","short_name":"Adm"}
-    ]  
+    $scope.add_multinote = function(text){
+        var inters = [];
+        angular.forEach($filter('filter')($scope.klass.interactions,{'status':'Enr','send_msg':true}),function(value,key){
+            inters.push(value.resource_uri)
+        });
+        if (inters.length) {
+            var data = {"notes":text,"timestamp":new Date().toJSON(),"interactions":inters}
 
-    $scope.score_columns = ['r_score_in','r_score_out','w_score_in','w_score_out'];                    
+            Record.save(data);
+            $scope.multinote = "";
+        }
+        else {
+            $scope.multinote = "nothing checked";
+        }
 
-    $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
-    $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
+    }                     
 
     $scope.goStudent = function(studentId) {
         $location.path("/classes/"+klass.id+"/students/"+studentId);
@@ -93,7 +114,7 @@ function klass($scope,$filter,Klass,Interaction,$routeParams,$location) {
     
     
 }
-klass.$inject = ['$scope','$filter','Klass','Interaction','$routeParams','$location','saveQueue'];
+klass.$inject = ['$scope','$filter','Klass','Interaction','Record','$routeParams','$location','saveQueue'];
 
 
 function interaction($scope,Interaction,$routeParams) {
@@ -110,21 +131,11 @@ function interaction($scope,Interaction,$routeParams) {
                          {"key":"r_score_out","value":"R out"},
                          {"key":"w_score_out","value":"W out"}];
 
-    $scope.status_map = [
-        {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
-        {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
-        {'key':"adm","long_name":"Admitted","short_name":"Adm"}
-    ] 
-
-    $scope.score_columns = ['r_score_in','r_score_out','w_score_in','w_score_out'];
-    $scope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
-    $scope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};
-    
-
     var interaction = $scope.interaction = Interaction.get({'interactId':$routeParams.interactId},function(){
         $scope.klass = interaction.klass
         $scope.student = interaction.student
     });
+
 
     $scope.add_note = function(text) {
         var note = {

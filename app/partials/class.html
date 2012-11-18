@@ -15,8 +15,8 @@
         
         <form>
             <legend>Add note to all checked students</legend>
-            <textarea rows="5" cols="200" ng-model="multinote" save-focus id="multinote"> </textarea>
-            <input type="submit" class="btn">
+            <textarea rows="5" class="span5" ng-model="multinote"> </textarea>
+            <input type="submit" class="btn" ng-click="add_multinote(multinote);">
         </form>
 
     </div>

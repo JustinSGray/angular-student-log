@@ -16,6 +16,11 @@ factory('Interaction', function($resource){
     query: {method:'GET', params:{interactId:""}, isArray:true}
   });
 }).
+factory('Record', function($resource){
+  return $resource('/api/v1/records/:recordId', {}, {
+    query: {method:'GET', params:{interactId:""}, isArray:true}
+  });
+}).
 factory('uiState', function() {
     var activeElement = {
         current: null,

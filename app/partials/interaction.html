@@ -72,20 +72,22 @@
 
 <div class="row">
     <div class="span12">
-        <table class="table table-bordered table-stripped" ng-init="predicate='date_time';reverse=false;">
+        <table class="table table-bordered table-stripped" ng-init="predicate='record.timestamp';reverse=false;">
             <thead>
               <tr>
-                <th><a href="" ng-click="predicate='class.name';reverse=!reverse;">Class</a></th>
-                <th><a href="" ng-click="predicate='date_time';reverse=!reverse;">Date {{reverse}}</a></th>
+                <th style="width:10%"><a href="" ng-click="predicate='class.name';reverse=!reverse;">Class</a></th>
+                <th style="width:18%"><a href="" ng-click="predicate='record.timestamp';reverse=!reverse;">Date {{reverse}}</a></th>
                 <th>Note</th>
             </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="note in interaction.notes | orderBy:predicate:reverse">
-                <td>{{note.class.name}}</td>
+              <tr ng-repeat="record in interaction.records | orderBy:predicate:reverse">
+                <td>{{interaction.klass.name}}</td>
                 <!--<td>{{note.date_time | date:'MM/dd/yyyy' }}</td>-->
-                <td>{{note.date_time}}</td>
-                <td>{{note.note}}</td>
+                <td>
+                    {{ record.timestamp | date:'MM/dd/yyyy'}}
+                </td>
+                <td>{{record.notes}}</td>
               </tr>
             </tbody>
         </table>
