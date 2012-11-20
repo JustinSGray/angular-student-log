@@ -49,9 +49,9 @@ function klasses($scope,$http,Klass) {
 }
 klasses.$inject = ['$scope','$http','Klass'];
 
-function klass($scope,$filter,Klass,Interaction,Record,$routeParams,$location) {
-    $scope.multinote = "Hello?";
+function klass($scope,$filter,Klass,Interaction,Record,$cookies,$routeParams,$location) {
     $scope.select_options = {all:false}
+    $scope.csrf = $cookies.csrftoken;
 
     $scope.klass = Klass.get({'classId':$routeParams.classId},function(){
         angular.forEach($scope.klass.interactions,function(value,key){ 
@@ -114,7 +114,7 @@ function klass($scope,$filter,Klass,Interaction,Record,$routeParams,$location) {
     
     
 }
-klass.$inject = ['$scope','$filter','Klass','Interaction','Record','$routeParams','$location','saveQueue'];
+klass.$inject = ['$scope','$filter','Klass','Interaction','Record','$cookies','$routeParams','$location','saveQueue'];
 
 
 function interaction($scope,Interaction,Record,saveQueue,$routeParams) {

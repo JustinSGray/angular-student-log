@@ -7,15 +7,16 @@
 
 <div class="row">
     <div class="span5">
-        <form>
+        <form action="/loadroster/" method="POST">
             <legend>Load Roster</legend>   
             <input type="file"> <input type="submit" class="btn">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf}}"/>
         </form> 
         
         
         <form>
-            <legend>Add note to all checked students</legend>
-            <textarea rows="5" class="span5" ng-model="multinote"> </textarea>
+            <legend>Class Note</legend>
+            <textarea rows="5" class="span5" ng-model="multinote" placeholder="Add a note to all selected enrolled students"> </textarea>
             <input type="submit" class="btn" ng-click="add_multinote(multinote);">
         </form>
 
