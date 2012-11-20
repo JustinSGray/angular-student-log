@@ -28,13 +28,13 @@ factory('uiState', function() {
     };
     return {
         blur: function(element) {
-            console.log('blurred: ' + $(element).attr('id'));
+            //console.log('blurred: ' + $(element).attr('id'));
             activeElement.current = '';
             activeElement.previous = $(element).attr('id');
 
         },
         focus: function(element) {
-            console.log('focussed: ' + $(element).attr('id'));
+            //console.log('focussed: ' + $(element).attr('id'));
             activeElement.current = $(element).attr('id');
         },
         active: activeElement
@@ -76,10 +76,10 @@ factory('saveQueue', function(uiState, $rootScope) {
     $rootScope.$watch(function() {
         return uiState.active.current;
     }, function(newValue, oldValue) {
-        console.log("active state change: ",uiState.active.current)
-        //if (oldValue != newValue) {
+        //console.log("active state change: ",uiState.active.current)
+        if (oldValue != newValue) {
             saveQueue.executeCallbacks();
-        //}
+        }
     });
     return saveQueue;
 });

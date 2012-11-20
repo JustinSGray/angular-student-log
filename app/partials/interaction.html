@@ -25,7 +25,9 @@
 <div class="row">
     <div class="span6">
         <h3>Student Notes</h3>
-        <textarea ng-model="student.notes" rows="5" class="span5" save-focus></textarea>
+        <div class="control-group" ng-init="save_class=null" ng-class="save_class">
+        <textarea ng-model="student.notes" rows="5" class="span5" save-focus ng-focus="onFocus()"></textarea>
+    </div>
     </div>
     <div class="span6">
         <h3>Other Info</h3>
@@ -53,9 +55,9 @@
                     <input type="checkbox" ng-model="interaction.q2"> P2
                 </div>
             </div>
-            <div class="control-group">
+            <!--<div class="control-group">
                 <button type="submit" class="btn" ng-click="save_interaction();">Save</button>
-            </div>
+            </div>-->
         </form>
     </div>
 </div>
@@ -72,17 +74,17 @@
 
 <div class="row">
     <div class="span12">
-        <table class="table table-bordered table-stripped" ng-init="predicate='record.timestamp';reverse=false;">
+        <table class="table table-bordered table-stripped" ng-init="predicate='timestamp';reverse=true;">
             <thead>
               <tr>
-                <th style="width:10%"><a href="" ng-click="predicate='class.name';reverse=!reverse;">Class</a></th>
-                <th style="width:18%"><a href="" ng-click="predicate='record.timestamp';reverse=!reverse;">Date {{reverse}}</a></th>
-                <th>Note</th>
+                <th style="width:10%"><a href="" ng-click="predicate='klass.name';reverse=!reverse;">Class</a></th>
+                <th style="width:18%"><a href="" ng-click="predicate='timestamp';reverse=!reverse;">Date</a></th>
+                <th style="width:40%; word-wrap:break-word;">Note</th>
             </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="record in interaction.records | orderBy:predicate:reverse">
-                <td>{{interaction.klass.name}}</td>
+              <tr ng-repeat="record in student.records | orderBy:predicate:reverse">
+                <td>{{record.klass.name}}</td>
                 <!--<td>{{note.date_time | date:'MM/dd/yyyy' }}</td>-->
                 <td>
                     {{ record.timestamp | date:'MM/dd/yyyy'}}

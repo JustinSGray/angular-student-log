@@ -117,7 +117,7 @@ function klass($scope,$filter,Klass,Interaction,Record,$routeParams,$location) {
 klass.$inject = ['$scope','$filter','Klass','Interaction','Record','$routeParams','$location','saveQueue'];
 
 
-function interaction($scope,Interaction,$routeParams) {
+function interaction($scope,Interaction,Record,saveQueue,$routeParams) {
 
     $scope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
@@ -130,39 +130,58 @@ function interaction($scope,Interaction,$routeParams) {
                          {"key":"w_score_in","value":"W in"},
                          {"key":"r_score_out","value":"R out"},
                          {"key":"w_score_out","value":"W out"}];
-    var auto_save = ['status','teacher','q1','q2'];
 
     $scope.interaction = Interaction.get({'interactId':$routeParams.interactId},function(){
         var interaction = $scope.interaction
         $scope.klass = interaction.klass
         $scope.student = interaction.student
         
+        var auto_save = ['status','teacher','q1','q2'];
         angular.forEach(auto_save,function(attr,key){
             $scope.$watch('interaction.'+attr,function(oldVal,newVal){
                 $scope.save_interaction();
             },true);
         });
+
+        $scope.$watch('interaction.student.notes',function(oldVal,newVal){
+            saveQueue.add('interaction.student.notes',function(){
+                $scope.save_interaction();
+            });
+        })
+
+        angular.forEach($scope.student.records,function(record,key){
+            record.timestamp =record.timestamp.replace(/\.[0-9]+/,"")
+            record.timestamp += "Z";
+        })
     });
 
     
-    
-
+    //applies a warning so you know it's not been saved yet
+    $scope.onFocus = function(){
+        $scope.save_class = "warning"
+    };
 
     $scope.add_note = function(text) {
         var note = {
             "class":$scope.klass,
-            "date_time": new Date(),
-            "note":text
+            "timestamp": new Date().toJSON(),
+            "notes":text,
+            "students":[$scope.student.resource_uri,],
+            "klass":$scope.klass,
         }
-        $scope.klass_data.notes.push(note);
+        Record.save(note,function(){
+            $scope.student.records.push(note);
+        })
+        
     }
 
     $scope.save_interaction = function() {
         Interaction.save($scope.interaction);
+        $scope.save_class = null
     }            
 
 
 }
-interaction.$inject = ['$scope','Interaction','$routeParams'];
+interaction.$inject = ['$scope','Interaction','Record','saveQueue','$routeParams'];
 
 

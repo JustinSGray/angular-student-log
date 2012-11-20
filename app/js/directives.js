@@ -70,15 +70,25 @@ angular.module('studentLog.directives', []).
         }
     };
   }).
-  directive('saveChange',function(uiState) {
+  directive('ngFocus',function(){
     return {
-      restrict: 'A',
-      scope: false,
-      link: function(scope,element,attrs) {
-            $(element).bind('change',function() {
-                scope.$apply(uiState.focus(element));
-                scope.$apply(uiState.blur(element));
-            })
-      }
-    } 
+        restrict: 'A',
+        scope: false,
+        link: function(scope,element,attrs){
+          element.bind('focus', function(){
+             scope.$eval(attrs.ngFocus);
+          });
+        }
+    };
+  }).
+  directive('ngBlur',function(){
+    return {
+        restrict: 'A',
+        scope: false,
+        link: function(scope,element,attrs){
+          element.bind('blur', function(){
+             scope.$eval(attrs.ngFocus);
+          });
+        }
+    };
   });
