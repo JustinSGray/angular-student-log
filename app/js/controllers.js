@@ -3,14 +3,11 @@
 
 /* root scope */ 
 app.run(function($rootScope) {
-    $rootScope.alert = function(text) {
-      alert(text);
-    };
-
+    
     $rootScope.status_map = [
-        {'key':"enr","long_name":"Enrolled","short_name":"Enr"},
-        {'key':"wd","long_name":"Withdrawn","short_name":"WD"},
-        {'key':"adm","long_name":"Admitted","short_name":"Adm"}
+        {'key':"ENR","long_name":"Enrolled","short_name":"Enr"},
+        {'key':"WD","long_name":"Withdrawn","short_name":"WD"},
+        {'key':"ADM","long_name":"Admitted","short_name":"Adm"}
     ] 
 
     $rootScope.score_columns = ['r_score_in','r_score_out','w_score_in','w_score_out'];
@@ -19,7 +16,7 @@ app.run(function($rootScope) {
   });
 /* Controllers */
 
-function klasses($scope,$http,Klass) {
+app.controller('klasses', function klasses($scope,$http,Klass) {
     var klasses = $scope.klasses = Klass.query();
 
     $scope.addClass = function(class_name) {
@@ -46,20 +43,21 @@ function klasses($scope,$http,Klass) {
         klasses[i].active = !current
         Klass.save(klass);
     }
-}
-klasses.$inject = ['$scope','$http','Klass'];
+});
 
-function klass($scope,$filter,Klass,Interaction,Record,$cookies,$routeParams,$location) {
+app.controller('klass',function klass($scope,$filter,Klass,Interaction,Record,$cookies,$routeParams) {
     $scope.select_options = {all:false}
     $scope.csrf = $cookies.csrftoken;
-
     $scope.klass = Klass.get({'classId':$routeParams.classId},function(){
         angular.forEach($scope.klass.interactions,function(value,key){ 
             $scope.klass.interactions[key].send_msg = $scope.select_options.all;
             
             var name = "klass.interactions["+key+"]";
+            
             $scope.$watch(name,function(oldVal,newVal){
-                Interaction.save($scope.klass.interactions[key]);
+                if(oldVal!=newVal){
+                  Interaction.save($scope.klass.interactions[key]);
+                }
             },true);
             
         });
@@ -107,17 +105,11 @@ function klass($scope,$filter,Klass,Interaction,Record,$cookies,$routeParams,$lo
 
     }                     
 
-    $scope.goStudent = function(studentId) {
-        $location.path("/classes/"+klass.id+"/students/"+studentId);
-    }
+  
 
-    
-    
-}
-klass.$inject = ['$scope','$filter','Klass','Interaction','Record','$cookies','$routeParams','$location','saveQueue'];
+});
 
-
-function interaction($scope,Interaction,Record,saveQueue,$routeParams) {
+app.controller('interaction',function interaction($scope,Interaction,Record,saveQueue,$routeParams) {
 
     $scope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
@@ -181,7 +173,12 @@ function interaction($scope,Interaction,Record,saveQueue,$routeParams) {
     }            
 
 
-}
-interaction.$inject = ['$scope','Interaction','Record','saveQueue','$routeParams'];
+});
 
+app.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/classes', {templateUrl: 'partials/classes.html', controller: 'klasses'});
+    $routeProvider.when('/classes/:classId', {templateUrl: 'partials/class.html', controller: 'klass'});
+    $routeProvider.when('/interactions/:interactId',{templateUrl: 'Partials/interaction.html',controller:'interaction'})
+    $routeProvider.otherwise({redirectTo: '/classes'});
+  }])
 
