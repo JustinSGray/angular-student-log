@@ -91,4 +91,18 @@ angular.module('studentLog.directives', []).
           });
         }
     };
+  }).
+  directive('passing',function(){
+    return {
+      restrict: "A",
+      scope:false,
+      link: function(scope,element,attrs){
+        //passing: inter.student.r_score_in>=400||inter.student.r_score_in.indexOf('FE')>=0}
+        var score = scope.$eval(attrs.passing);
+        if(score&&(score>=400||score.indexOf('FE')>=0)){
+            element.addClass('passing');
+            element.append(score);
+        }
+      }
+    }
   });

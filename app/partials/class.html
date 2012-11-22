@@ -47,7 +47,9 @@
                             <input type="checkbox" ng-model="inter.send_msg" ng-show="$top_first">
                         </td>
                         
-                        <td>{{inter.student.sep_id}}</td>
+                        <td><a ng-href="index.html#/interactions/{{inter.id}}">
+                            {{inter.student.sep_id}}
+                        </a></td>
                         <td>{{inter.student.last_name}}</td>
                         <td>{{inter.student.first_name}}</td>
                         <td>
@@ -70,14 +72,14 @@
                             </select> 
                         </td>
                         <td>
-                            <a ng-href="index.html#/interactions/{{inter.id}}">{{inter.student.parents_name}}</a>
+                           {{inter.student.parents_name}}
                         </td>
                         <td >{{inter.student.grade}}</td>
                         <td>{{inter.student.phone}}</td>
-                        <td ng-class="{passing: inter.student.r_score_in>=400||inter.student.r_score_in.indexOf('FE')>=0}">{{inter.student.r_score_in}}</td>
-                        <td >{{inter.student.r_score_out}}</td>
-                        <td >{{inter.student.w_score_in}}</td>
-                        <td >{{inter.student.w_score_out}}</td>
+                        <td passing="inter.student.r_score_in"></td>
+                        <td passing="inter.student.r_score_out"></td>
+                        <td passing="inter.student.w_score_in"></td>
+                        <td passing="inter.student.w_score_out"></td>
                       </tr>
                     </tbody>
                 </table>
