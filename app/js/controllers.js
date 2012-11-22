@@ -23,8 +23,10 @@ app.controller('klasses', function klasses($scope,$http,Klass) {
         var new_klass = {'name':class_name, 
                       'date':new Date().toJSON(),
                       'active':true};
-        Klass.save(new_klass,function(){
-            klasses.push(new_klass);
+        Klass.save(new_klass,function(klass){
+            console.log(klass);
+            klasses.push(klass);
+            $scope.class_name = "";
         });
     }
 
