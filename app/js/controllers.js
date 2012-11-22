@@ -24,7 +24,6 @@ app.controller('klasses', function klasses($scope,$http,Klass) {
                       'date':new Date().toJSON(),
                       'active':true};
         Klass.save(new_klass,function(klass){
-            console.log(klass);
             klasses.push(klass);
             $scope.class_name = "";
         });
