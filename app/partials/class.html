@@ -41,38 +41,43 @@
                     </thead>
                     <div ng-init="$top_first=$first;"></div>
                     <tbody>
-                      <tr ng-repeat="inter in klass.interactions | filter:{'status':status.short_name}"
+                      <tr ng-repeat="inter in klass.interactions | filter:{'status':status.key}"
                       ng-class="teacher_classes[inter.teacher]">
                         <td> 
                             <input type="checkbox" ng-model="inter.send_msg" ng-show="$top_first">
                         </td>
-                        <td ng-repeat="col in header_map"
-                            ng-class="{passing: score_columns.indexOf(col.key)>=0&&(inter.student[col.key]>=400||inter.student[col.key].indexOf('FE')>=0)}">
-                            <ng-switch on="col.key"> 
-                                <span ng-switch-when="dec">
-                                    <input type="checkbox" ng-model="inter.student.dec">
-                                </span> 
-                                <span ng-switch-when="p1">
-                                    <input type="checkbox" ng-model="inter.q1">
-                                </span> 
-                                <span ng-switch-when="p2">
-                                    <input type="checkbox" ng-model="inter.q2">
-                                </span>      
-                                <span ng-switch-when="status">
-                                    <select class="span1" ng-model="inter.status"
-                                    ng-options="o.key as o.short_name for o in status_map">
-                                    </select>
-                                </span>
-                                <span ng-switch-when="teacher">
-                                    <select class="input-small" ng-model="inter.teacher"
-                                    ng-options="key for key in teacher_types">
-                                    </select>
-                                </span>
-                                <span ng-switch-default>
-                                    <a ng-href="index.html#/interactions/{{inter.id}}">{{inter.student[col.key]}}</a>
-                                </span>    
-                            </ng-switch>    
+                        
+                        <td>{{inter.student.sep_id}}</td>
+                        <td>{{inter.student.last_name}}</td>
+                        <td>{{inter.student.first_name}}</td>
+                        <td>
+                            <input type="checkbox" ng-model="inter.student.dec">
+                        </td> 
+                        <td>
+                            <input type="checkbox" ng-model="inter.q1">
                         </td>
+                        <td>
+                            <input type="checkbox" ng-model="inter.q2">
+                        </td> 
+                        <td>
+                            <select class="span1" ng-model="inter.status"
+                            ng-options="o.key as o.key for o in status_map">
+                            </select>
+                        </td>
+                        <td>
+                            <select class="input-small" ng-model="inter.teacher"
+                            ng-options="key for key in teacher_types">
+                            </select> 
+                        </td>
+                        <td>
+                            <a ng-href="index.html#/interactions/{{inter.id}}">{{inter.student.parents_name}}</a>
+                        </td>
+                        <td >{{inter.student.grade}}</td>
+                        <td>{{inter.student.phone}}</td>
+                        <td ng-class="{passing: inter.student.r_score_in>=400||inter.student.r_score_in.indexOf('FE')>=0}">{{inter.student.r_score_in}}</td>
+                        <td >{{inter.student.r_score_out}}</td>
+                        <td >{{inter.student.w_score_in}}</td>
+                        <td >{{inter.student.w_score_out}}</td>
                       </tr>
                     </tbody>
                 </table>

@@ -5,9 +5,9 @@
 app.run(function($rootScope) {
     
     $rootScope.status_map = [
-        {'key':"ENR","long_name":"Enrolled","short_name":"Enr"},
-        {'key':"WD","long_name":"Withdrawn","short_name":"WD"},
-        {'key':"ADM","long_name":"Admitted","short_name":"Adm"}
+        {'key':"ENR","long_name":"Enrolled"},
+        {'key':"WD ","long_name":"Withdrawn"},
+        {'key':"ADM","long_name":"Admitted"}
     ] 
 
     $rootScope.score_columns = ['r_score_in','r_score_out','w_score_in','w_score_out'];
