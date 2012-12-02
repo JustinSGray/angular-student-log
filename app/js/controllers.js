@@ -11,12 +11,36 @@ app.run(function($rootScope) {
     ] 
 
     $rootScope.score_columns = ['r_score_in','r_score_out','w_score_in','w_score_out'];
-    $rootScope.teacher_types = ['GenEd','DEC','Lift','AC/MH','Indep']
-    $rootScope.teacher_classes = {'GenEd':'','DEC':'DEC','Lift':'Lift','AC/MH':'ACMH','Indep':'Indep'};                     
+    $rootScope.teacher_types = ['GenEd','DEC ','LIFT','AC/MH','Indep ']
+    $rootScope.teacher_classes = {'GenEd':'','DEC ':'DEC','LIFT':'Lift','AC/MH':'ACMH','Indep ':'Indep'};                     
   });
 /* Controllers */
 
-app.controller('klasses', function klasses($scope,$http,Klass) {
+app.controller('people_search',function people_search($scope,$location){
+    $scope.q = "";
+    $scope.search = function(){
+      /*$http({method: 'GET', url: '/api/v1/students/search/',
+           params: {format:"json",q:$scope.q}}).
+        success(function(data) {
+          console.log(data);
+        })*/
+      $location.search('q',$scope.q).path('/search')
+    };
+});
+
+app.controller('search',function search($scope,$http,$routeParams){
+    $scope.q = $routeParams['q'];
+
+    $http({method: 'GET', url: '/api/v1/students/search/',
+       params: {format:"json",q:$scope.q}}).
+    success(function(data) {
+      $scope.students = data.objects;
+      console.log(data.objects);
+    })
+   
+});
+
+app.controller('klasses', function klasses($scope,Klass) {
     var klasses = $scope.klasses = Klass.query();
 
     $scope.addClass = function(class_name) {
@@ -46,10 +70,10 @@ app.controller('klasses', function klasses($scope,$http,Klass) {
     }
 });
 
-app.controller('klass',function klass($scope,$filter,Klass,Interaction,Record,$cookies,$routeParams) {
+app.controller('klass',function klass($scope,$filter,FullKlass,Interaction,Record,$cookies,$routeParams) {
     $scope.select_options = {all:false}
     $scope.csrf = $cookies.csrftoken;
-    $scope.klass = Klass.get({'classId':$routeParams.classId},function(){
+    $scope.klass = FullKlass.get({'classId':$routeParams.classId},function(){
         angular.forEach($scope.klass.interactions,function(value,key){ 
             $scope.klass.interactions[key].send_msg = $scope.select_options.all;
             
@@ -57,14 +81,19 @@ app.controller('klass',function klass($scope,$filter,Klass,Interaction,Record,$c
             
             $scope.$watch(name,function(oldVal,newVal){
                 if(oldVal!=newVal){
-                  Interaction.save($scope.klass.interactions[key]);
+                  var inter = $scope.klass.interactions[key]
+                  var update_inter = {
+                    id: inter.id,
+                    resource_uri: inter.resource_uri,
+                    status: inter.status,
+                    teacher: inter.teacher,
+                  }
+                  Interaction.save(inter);
                 }
             },true);
             
         });
     });
-
-    
 
     $scope.$watch("select_options.all",function(newVal,oldVal){
         angular.forEach($filter('filter')($scope.klass.interactions,{'status':'Enr'}),function(value,key){
@@ -104,13 +133,10 @@ app.controller('klass',function klass($scope,$filter,Klass,Interaction,Record,$c
             $scope.multinote = "nothing checked";
         }
 
-    }                     
-
-  
-
+    }
 });
 
-app.controller('interaction',function interaction($scope,Interaction,Record,saveQueue,$routeParams) {
+app.controller('interaction',function interaction($scope,Student,Interaction,Record,saveQueue,$routeParams) {
 
     $scope.header_map = [{"key":"sep_id","value":"SepID"},
                          {"key":"last_name","value":"Last Name"},
@@ -125,9 +151,9 @@ app.controller('interaction',function interaction($scope,Interaction,Record,save
                          {"key":"w_score_out","value":"W out"}];
 
     $scope.interaction = Interaction.get({'interactId':$routeParams.interactId},function(){
-        var interaction = $scope.interaction
-        $scope.klass = interaction.klass
-        $scope.student = interaction.student
+        var interaction = $scope.interaction;
+        $scope.klass = interaction.klass;
+        $scope.student = Student.get({'studentId':interaction.student.sep_id});
         
         var auto_save = ['status','teacher','q1','q2'];
         angular.forEach(auto_save,function(attr,key){
@@ -136,9 +162,10 @@ app.controller('interaction',function interaction($scope,Interaction,Record,save
             },true);
         });
 
-        $scope.$watch('interaction.student.notes',function(oldVal,newVal){
-            saveQueue.add('interaction.student.notes',function(){
-                $scope.save_interaction();
+        $scope.$watch('student.notes',function(oldVal,newVal){
+            saveQueue.add('student.notes',function(){
+                Student.save($scope.student);
+                $scope.save_class = null
             });
         })
 
@@ -179,7 +206,8 @@ app.controller('interaction',function interaction($scope,Interaction,Record,save
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/classes', {templateUrl: 'partials/classes.html', controller: 'klasses'});
     $routeProvider.when('/classes/:classId', {templateUrl: 'partials/class.html', controller: 'klass'});
-    $routeProvider.when('/interactions/:interactId',{templateUrl: 'Partials/interaction.html',controller:'interaction'})
+    $routeProvider.when('/interactions/:interactId',{templateUrl: 'Partials/interaction.html',controller:'interaction'});
+    $routeProvider.when('/search',{templateUrl: 'Partials/search.html',controller:"search"})
     $routeProvider.otherwise({redirectTo: '/classes'});
   }])
 

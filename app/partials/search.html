@@ -1,0 +1,22 @@
+<div class="row"><div class="span5">
+    <table class="table table-condensed table-bordered">
+        <thead>
+            <tr>
+                <th>SEP ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone #</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="student in students">
+                <td><a ng-href="index.html#/interactions/{{student.interactions[0].klass.id}}/">
+                    {{student.sep_id}}
+                </a></td>
+                <td>{{student.first_name}}</td>
+                <td>{{student.last_name}}</td>
+                <td>{{student.phone}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div></div>

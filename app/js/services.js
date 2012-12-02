@@ -11,9 +11,19 @@ factory('Klass', function($resource){
     query: {method:'GET', params:{classId:""}, isArray:true}
   });
 }).
+factory('FullKlass', function($resource){
+  return $resource('/api/v1/classes_with_interactions/:classId', {}, {
+    query: {method:'GET', params:{classId:""}, isArray:true}
+  });
+}).
 factory('Interaction', function($resource){
   return $resource('/api/v1/interactions/:interactId', {}, {
     query: {method:'GET', params:{interactId:""}, isArray:true}
+  });
+}).
+factory('Student', function($resource){
+  return $resource('/api/v1/students/:studentId', {}, {
+    query: {method:'GET', params:{studentId:""}, isArray:true}
   });
 }).
 factory('Record', function($resource){

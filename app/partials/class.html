@@ -5,17 +5,40 @@
     </div>
 </div>        
 
-<div class="row">
+<div class="row fileupload-buttonbar">
     <div class="span5">
-        <form action="/loadroster/{{klass.id}}/" method="POST" enctype="multipart/form-data">
+        <!--<form dropbox action="/loadroster/{{klass.id}}/" method="POST" enctype="multipart/form-data">
             <legend>Load Roster</legend>   
             <input type="file" name="file"> <input type="submit" class="btn">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf}}"/>
-        </form> 
+        </form> -->
+
         
+            <form ajaxform="roster_upload_status,upload_msg" action="/loadroster/{{klass.id}}/" method="POST" enctype="multipart/form-data">
+                <div class="control-group {{roster_upload_status}}">
+                    
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf}}"/>
+                    <div class="controls">
+                        <span class="btn btn-success fileinput-button">
+                        <i class="icon-plus icon-white"></i>
+                        <span>Roster CSV File</span>
+                        <input type="file" name="file" ng-model="new_roster">
+                        </span>
+                        <span class="help-inline"> {{upload_msg}} </span>
+                        <span class="help-inline"> {{new_roster}} </span>
+
+                    </div>
+                </div>
+        </form>
         
+        <br/>
+    </div>
+</div>   
+
+<div class="row">
+    <div class="span5">        
         <form>
-            <legend>Class Note</legend>
+            <legend>Class Wide Note</legend>
             <textarea rows="5" class="span5" ng-model="multinote" placeholder="Add a note to all selected enrolled students"> </textarea>
             <input type="submit" class="btn" ng-click="add_multinote(multinote);">
         </form>
@@ -34,18 +57,22 @@
                       <tr>
                         <th> 
                              <input type="checkbox" ng-model="select_options.all" ng-show="$first">
-                             Msg
+                             
+                        </th>
+                        <th> 
+                             #
                         </th>
                         <th ng-repeat="col in header_map">{{col.value}}</th>
                       </tr>
                     </thead>
                     <div ng-init="$top_first=$first;"></div>
                     <tbody>
-                      <tr ng-repeat="inter in klass.interactions | filter:{'status':status.key}"
+                      <tr ng-repeat="inter in klass.interactions | filter:{'status':status.key} | orderBy:['student.last_name','student.first_name']"
                       ng-class="teacher_classes[inter.teacher]">
                         <td> 
                             <input type="checkbox" ng-model="inter.send_msg" ng-show="$top_first">
                         </td>
+                        <td>{{$index+1}}</td>
                         
                         <td><a ng-href="index.html#/interactions/{{inter.id}}">
                             {{inter.student.sep_id}}
@@ -77,8 +104,8 @@
                         <td >{{inter.student.grade}}</td>
                         <td>{{inter.student.phone}}</td>
                         <td passing="inter.student.r_score_in"></td>
-                        <td passing="inter.student.r_score_out"></td>
                         <td passing="inter.student.w_score_in"></td>
+                        <td passing="inter.student.r_score_out"></td>
                         <td passing="inter.student.w_score_out"></td>
                       </tr>
                     </tbody>
