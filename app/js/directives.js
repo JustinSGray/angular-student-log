@@ -87,7 +87,7 @@ angular.module('studentLog.directives', []).
         scope: false,
         link: function(scope,element,attrs){
           element.bind('blur', function(){
-             scope.$eval(attrs.ngFocus);
+             scope.$eval(attrs.ngBlur);
           });
         }
     };
@@ -96,6 +96,7 @@ angular.module('studentLog.directives', []).
     return {
       restrict: "A",
       scope:false,
+      priority: 0,
       link: function(scope,element,attrs){
         //passing: inter.student.r_score_in>=400||inter.student.r_score_in.indexOf('FE')>=0}
         var score = scope.$eval(attrs.passing);

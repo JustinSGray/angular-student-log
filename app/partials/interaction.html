@@ -7,16 +7,43 @@
         <table class="table table-bordered table-condensed">
             <thead>
                 <tr>
-                    <th ng-repeat="col in header_map">{{col.value}}</th>
+                    <!--<th ng-repeat="col in header_map">{{col.value}}</th>-->
+                    <th>SepID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>DEC</th>
+                    <th>Parent's Name</th>
+                    <th>Grade</th>
+                    <th>Phone #</th>
+                    <th>R in</th>
+                    <th>W in</th>
+                    <th>R out</th>
+                    <th>W out</th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr>
-                <td ng-repeat="col in header_map"
-                            ng-class="{passing: score_columns.indexOf(col.key)>=0&&(student[col.key]>=400||student[col.key].indexOf('FE')>=0)}">
-                            {{student[col.key]}}
-                </td> 
+                    <td><input class="input-mini" type="text" ng-model="student.sep_id" save-focus></td>
+                    <td><input class="input-small" type="text" ng-model="student.first_name" save-focus></td>
+                    <td><input class="input-small" type="text" ng-model="student.last_name" save-focus></td>
+                    <td><input style="margin-left:9px;" type="checkbox" ng-model="student.dec" save-focus></td>
+                    <td><input class="input-medium" type="text" ng-model="student.parents_name" save-focus></td>
+                    <td><input class="input-mini" type="text" ng-model="student.grade" save-focus></td>
+                    <td><input class="input-medium" type="text" ng-model="student.phone" save-focus></td>
+                    <td ng-class="{passing: (student.r_score_in>=400||student.r_score_in.indexOf('FE')>=0)}">
+                        <input class="input-mini" type="text" ng-model="student.r_score_in" save-focus>
+                    </td>
+                    <td ng-class="{passing: (student.w_score_in>=400||student.w_score_in.indexOf('FE')>=0)}">
+                        <input class="input-mini" type="text" ng-model="student.w_score_in" save-focus>
+                    </td>
+                    <td ng-class="{passing: (student.r_score_out>=400||student.r_score_out.indexOf('FE')>=0)}">
+                        <input class="input-mini" type="text" ng-model="student.r_score_out" save-focus>
+                    </td>
+                    <td ng-class="{passing: (student.w_score_out>=400||student.w_score_out.indexOf('FE')>=0)}">
+                        <input class="input-mini" type="text" ng-model="student.w_score_out" save-focus>
+                    </td>
+
                 </tr>
             </tbody>
         </table>

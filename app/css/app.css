@@ -44,3 +44,7 @@ select {
   direction: ltr;
   cursor: pointer;
 }
+
+.no-marg input {
+  margin:0;
+}

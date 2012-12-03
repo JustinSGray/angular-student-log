@@ -84,12 +84,6 @@ app.controller('klass',function klass($scope,$filter,FullKlass,Interaction,Recor
               $scope.$watch(name,function(oldVal,newVal){
                   if(oldVal!=newVal){
                     var inter = $scope.klass.interactions[key]
-                    var update_inter = {
-                      id: inter.id,
-                      resource_uri: inter.resource_uri,
-                      status: inter.status,
-                      teacher: inter.teacher,
-                    }
                     Interaction.save(inter);
                   }
               },true);
@@ -181,14 +175,16 @@ app.controller('interaction',function interaction($scope,Student,Interaction,Rec
             },true);
         });
 
-        $scope.$watch('student.notes',function(oldVal,newVal){
-            saveQueue.add('student.notes',function(){
+        $scope.$watch('student',function(oldVal,newVal){
+            saveQueue.add('student',function(){
                 Student.save($scope.student);
                 $scope.save_class = null
             });
-        });
+        },true);
 
-        
+        $scope.$watch('student.dec',function(){
+          Student.save($scope.student);
+        });
     });
 
     
