@@ -73,27 +73,36 @@ app.controller('klasses', function klasses($scope,Klass) {
 app.controller('klass',function klass($scope,$filter,FullKlass,Interaction,Record,$cookies,$routeParams) {
     $scope.select_options = {all:false}
     $scope.csrf = $cookies.csrftoken;
-    $scope.klass = FullKlass.get({'classId':$routeParams.classId},function(){
-        angular.forEach($scope.klass.interactions,function(value,key){ 
-            $scope.klass.interactions[key].send_msg = $scope.select_options.all;
-            
-            var name = "klass.interactions["+key+"]";
-            
-            $scope.$watch(name,function(oldVal,newVal){
-                if(oldVal!=newVal){
-                  var inter = $scope.klass.interactions[key]
-                  var update_inter = {
-                    id: inter.id,
-                    resource_uri: inter.resource_uri,
-                    status: inter.status,
-                    teacher: inter.teacher,
+
+    function get_klass(){
+      $scope.klass = FullKlass.get({'classId':$routeParams.classId},function(){
+          angular.forEach($scope.klass.interactions,function(value,key){ 
+              $scope.klass.interactions[key].send_msg = $scope.select_options.all;
+              
+              var name = "klass.interactions["+key+"]";
+              
+              $scope.$watch(name,function(oldVal,newVal){
+                  if(oldVal!=newVal){
+                    var inter = $scope.klass.interactions[key]
+                    var update_inter = {
+                      id: inter.id,
+                      resource_uri: inter.resource_uri,
+                      status: inter.status,
+                      teacher: inter.teacher,
+                    }
+                    Interaction.save(inter);
                   }
-                  Interaction.save(inter);
-                }
-            },true);
-            
-        });
-    });
+              },true);
+              
+          });
+      });
+    };
+
+    get_klass();
+
+    $scope.upload_success = function(){
+        get_klass();
+    };
 
     $scope.$watch("select_options.all",function(newVal,oldVal){
         angular.forEach($filter('filter')($scope.klass.interactions,{'status':'Enr'}),function(value,key){
@@ -119,12 +128,13 @@ app.controller('klass',function klass($scope,$filter,FullKlass,Interaction,Recor
                          {"key":"w_score_out","value":"W out"}];
 
     $scope.add_multinote = function(text){
-        var inters = [];
+        var students = [];
         angular.forEach($filter('filter')($scope.klass.interactions,{'status':'Enr','send_msg':true}),function(value,key){
-            inters.push(value.resource_uri)
+            students.push(value.student.resource_uri);
         });
-        if (inters.length) {
-            var data = {"notes":text,"timestamp":new Date().toJSON(),"interactions":inters}
+        if (students.length) {
+            var data = {"klass":$scope.klass.resource_uri,"students":students,
+                        "notes":text,"timestamp":new Date().toJSON()}
 
             Record.save(data);
             $scope.multinote = "";
@@ -153,7 +163,16 @@ app.controller('interaction',function interaction($scope,Student,Interaction,Rec
     $scope.interaction = Interaction.get({'interactId':$routeParams.interactId},function(){
         var interaction = $scope.interaction;
         $scope.klass = interaction.klass;
-        $scope.student = Student.get({'studentId':interaction.student.sep_id});
+        var d = new Date()
+        var n = d.getTimezoneOffset()/60;
+        var offset = "-0"+n+"00"
+        $scope.student = Student.get({'studentId':interaction.student.sep_id},function(){
+          angular.forEach($scope.student.records,function(record,key){
+            
+            record.timestamp =record.timestamp.replace(/\.[0-9]+/,"")
+            record.timestamp += offset;
+          });
+        });
         
         var auto_save = ['status','teacher','q1','q2'];
         angular.forEach(auto_save,function(attr,key){
@@ -167,12 +186,9 @@ app.controller('interaction',function interaction($scope,Student,Interaction,Rec
                 Student.save($scope.student);
                 $scope.save_class = null
             });
-        })
+        });
 
-        angular.forEach($scope.student.records,function(record,key){
-            record.timestamp =record.timestamp.replace(/\.[0-9]+/,"")
-            record.timestamp += "Z";
-        })
+        
     });
 
     

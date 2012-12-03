@@ -14,7 +14,7 @@
         </form> -->
 
         
-            <form ajaxform="roster_upload_status,upload_msg" action="/loadroster/{{klass.id}}/" method="POST" enctype="multipart/form-data">
+            <form ajaxform="roster_upload_status,upload_msg,upload_success()" action="/loadroster/{{klass.id}}/" method="POST" enctype="multipart/form-data">
                 <div class="control-group {{roster_upload_status}}">
                     
                     <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf}}"/>
@@ -28,6 +28,11 @@
                         <span class="help-inline"> {{new_roster}} </span>
 
                     </div>
+                </div><div class="control-group"> 
+                    <button type="submit" class="btn btn-primary">
+                        <i class="icon-upload icon-white"></i>
+                        <span>Upload</span>
+                    </button>
                 </div>
         </form>
         
@@ -62,7 +67,7 @@
                         <th> 
                              #
                         </th>
-                        <th ng-repeat="col in header_map">{{col.value}}</th>
+                        <th ng-repeat="col in header_map"><span  > {{col.value}}</span></th>
                       </tr>
                     </thead>
                     <div ng-init="$top_first=$first;"></div>
@@ -72,9 +77,9 @@
                         <td> 
                             <input type="checkbox" ng-model="inter.send_msg" ng-show="$top_first">
                         </td>
-                        <td>{{$index+1}}</td>
+                        <td >{{$index+1}}</td>
                         
-                        <td><a ng-href="index.html#/interactions/{{inter.id}}">
+                        <td ><a ng-href="index.html#/interactions/{{inter.id}}">
                             {{inter.student.sep_id}}
                         </a></td>
                         <td>{{inter.student.last_name}}</td>
@@ -98,10 +103,10 @@
                             ng-options="key for key in teacher_types">
                             </select> 
                         </td>
-                        <td>
+                        <td >
                            {{inter.student.parents_name}}
                         </td>
-                        <td >{{inter.student.grade}}</td>
+                        <td>{{inter.student.grade}}</td>
                         <td>{{inter.student.phone}}</td>
                         <td passing="inter.student.r_score_in"></td>
                         <td passing="inter.student.w_score_in"></td>

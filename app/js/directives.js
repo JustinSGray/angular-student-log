@@ -120,6 +120,9 @@ angular.module('studentLog.directives', []).
           var attr_set = attrs['ajaxform'].split(',');
           var status_class_var = attr_set[0];
           var status_msg_var = attr_set[1];
+          if (attr_set.length > 2) { //third one is success callback
+          var success_cb = attr_set[2];
+          }
 
 
           $(file_input).bind('change',function(){
@@ -130,7 +133,7 @@ angular.module('studentLog.directives', []).
             scope.$apply(status_class_var+"=''");
             scope.$apply(status_msg_var+"=''");
             
-            element.submit();
+            //element.submit();
           });
           
 
@@ -139,6 +142,7 @@ angular.module('studentLog.directives', []).
               var msg = resp.msg;
               scope.$apply(status_class_var+"=''");
               scope.$apply(status_msg_var+"='"+msg+"'");
+              scope.$apply(success_cb);
             },
             error: function(resp,status,xhr,element){
               
