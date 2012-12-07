@@ -1,0 +1,28 @@
+Test {{csrf}}
+<div class="row">
+    <div class="span12">
+        <form ajaxform="status,msg,login_success()" class="form-horizontal" action="/login/" method="POST">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf}}"/>  
+          <div class="control-group">
+            <label class="control-label" for="inputEmail">Username</label>
+            <div class="controls">
+              <input type="text" name="username" id="inputEmail" placeholder="Email">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="inputPassword">Password</label>
+            <div class="controls">
+              <input type="password" name="password" id="inputPassword" placeholder="Password">
+            </div>
+          </div>
+          <div class="control-group">
+            <div class="controls">
+              <label class="checkbox">
+                <input type="checkbox" name="remember_me"> Remember me
+              </label>
+              <button type="submit" class="btn">Sign in</button>
+            </div>
+          </div>
+        </form>
+    </div>
+</div>
