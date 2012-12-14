@@ -32,15 +32,8 @@
         <a class="brand" href="/"> Student Log </a>
         
          <ul class="nav pull-right">
-          <!--{% if user.is_authenticated %}
-          <li><p class="navbar-text">Logged in as <a>{{user.username}}</a>,</p></li>
-          <li><a href="#">logout</a></li>
-          {% else %} -->
-          <!--<li>
-          <p class="navbar-text"><a href="#?next={{request.path}}">Login</a>  
-            or 
-            <a href="">Sign Up</a></p>
-          </li> -->
+          <li> <a href="/logout/">Logout</a>
+          </li>
           <li>
             <form class="form-search form-inline" ng-controller="people_search" ng-submit="search()">
               <input type="text" class="input-medium search-query" style="margin-top: 5px;" placeholder="Find Students" ng-model="q">
