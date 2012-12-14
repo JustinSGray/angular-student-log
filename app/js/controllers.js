@@ -16,17 +16,6 @@ app.run(function($rootScope) {
   });
 /* Controllers */
 
-app.controller('login',function login($scope,$location,$cookies){
-  $scope.csrf = $cookies.csrftoken;
-
-  $scope.status = "";
-  $scope.msg = "";
-
-  $scope.login_success = function(){
-    $location.path('/classes');
-  };
-});
-
 app.controller('people_search',function people_search($scope,$location){
     $scope.q = "";
     $scope.search = function(){
@@ -51,8 +40,9 @@ app.controller('search',function search($scope,$http,$routeParams){
    
 });
 
-app.controller('klasses', function klasses($scope,Klass) {
+app.controller('klasses', function klasses($scope,Klass,$cookies) {
     var klasses = $scope.klasses = Klass.query();
+    $scope.csrf = $cookies.csrftoken;
 
     $scope.addClass = function(class_name) {
         var new_klass = {'name':class_name, 
@@ -227,12 +217,10 @@ app.controller('interaction',function interaction($scope,Student,Interaction,Rec
 });
 
 app.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/login',{templateUrl: 'partials/login.html', controller:'login'})
     $routeProvider.when('/classes', {templateUrl: 'partials/classes.html', controller: 'klasses'});
     $routeProvider.when('/classes/:classId', {templateUrl: 'partials/class.html', controller: 'klass'});
     $routeProvider.when('/interactions/:interactId',{templateUrl: 'Partials/interaction.html',controller:'interaction'});
     $routeProvider.when('/search',{templateUrl: 'Partials/search.html',controller:"search"})
-    $routeProvider.otherwise({redirectTo: '/login'});
-    //$routeProvider.otherwise({redirectTo: '/classes'});
+    $routeProvider.otherwise({redirectTo: '/classes'});
   }])
 
