@@ -57,8 +57,10 @@ app.controller('klasses', function klasses($scope,Klass,$cookies) {
     $scope.delClass = function(klass) {
         var r = confirm("Are you sure you want to delete this class? This will permanently remove all the data about it!!!")
         if(r){
-            $scope.klasses.splice(klasses.indexOf(klass),1);
-            Klass.delete({'classId':klass.id});
+            
+            Klass.delete({'classId':klass.id},function(){
+              $scope.klasses.splice(klasses.indexOf(klass),1);
+            });
         };
 
     }

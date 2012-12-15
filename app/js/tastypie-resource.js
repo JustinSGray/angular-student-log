@@ -2,7 +2,7 @@
 
 
 angular.module('tpResource', ['ng']).
-  factory('$resource', ['$http', '$parse', function($http, $parse) {
+  factory('$resource', ['$cookies','$http', '$parse', function($cookies,$http, $parse) {
     var DEFAULT_ACTIONS = {
       'get':    {method:'GET'},
       'save':   {method:'POST'},
@@ -160,12 +160,13 @@ angular.module('tpResource', ['ng']).
               arguments.length + " arguments.";
           }
 
+          var csrf = $cookies.csrftoken; // grab the csrf and force it into the headers
           var value = this instanceof Resource ? this : (action.isArray ? [] : new Resource(data));
           $http({
             method: action.method,
             url: route.url(extend({}, extractParams(data, action.params || {}), params)),
             data: data,
-            headers: extend({}, action.headers || {})
+            headers: extend({'X-CSRFToken':csrf}, action.headers || {})
           }).then(function(response) {
               if(action.isArray) {
                 var data = response.data.objects;
