@@ -112,8 +112,8 @@ app.controller('klass',function klass($scope,$filter,FullKlass,Interaction,Recor
                          {"key":"last_name","value":"Last Name"},
                          {"key":"first_name","value":'First Name'},
                          {"key":"dec","value":'DEC'},
-                         {"key":"p1","value":"P1"},
-                         {"key":"p2","value":"P2"},
+                         //{"key":"p1","value":"P1"}, //sharon want's these gone for now
+                         //{"key":"p2","value":"P2"},
                          {"key":"teacher","value":"Teacher"},
                          {"key":"status","value":"Status"},
                          {"key":"parents_name","value":"Parent's Name"},

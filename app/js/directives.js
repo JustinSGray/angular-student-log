@@ -100,7 +100,7 @@ angular.module('studentLog.directives', []).
       link: function(scope,element,attrs){
         //passing: inter.student.r_score_in>=400||inter.student.r_score_in.indexOf('FE')>=0}
         var score = scope.$eval(attrs.passing);
-        if(score&&(score>=400||score.indexOf('FE')>=0)){
+        if(score&&(score>=400||score.indexOf('FE')>=0||score.indexOf('AA')>=0)){
             element.addClass('passing');
             
         }
