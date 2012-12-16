@@ -221,8 +221,8 @@ app.controller('interaction',function interaction($scope,Student,Interaction,Rec
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/classes', {templateUrl: 'partials/classes.html', controller: 'klasses'});
     $routeProvider.when('/classes/:classId', {templateUrl: 'partials/class.html', controller: 'klass'});
-    $routeProvider.when('/interactions/:interactId',{templateUrl: 'Partials/interaction.html',controller:'interaction'});
-    $routeProvider.when('/search',{templateUrl: 'Partials/search.html',controller:"search"})
+    $routeProvider.when('/interactions/:interactId',{templateUrl: 'partials/interaction.html',controller:'interaction'});
+    $routeProvider.when('/search',{templateUrl: 'partials/search.html',controller:"search"})
     $routeProvider.otherwise({redirectTo: '/classes'});
   }])
 
