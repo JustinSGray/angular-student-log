@@ -206,6 +206,7 @@ app.controller('interaction',function interaction($scope,Student,Interaction,Rec
         }
         Record.save(note,function(){
             $scope.student.records.push(note);
+            $scope.new_note = ""
         })
         
     }
