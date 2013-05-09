@@ -49,11 +49,14 @@
 
     </div>
 </div>
-
+<div class="row">
+    <div class="span5">
+        <a href="/class_log/{{klass.id}}/"> Download class log to txt </a>
+    </div>
+</div>
 <div class="row">
     <div class="span12">
         <h2> Students </h2>
-        
         <tabs>
             <pane ng-repeat="status in status_map" title={{status.long_name}}>
                 <table class="table table-bordered table-condensed">
